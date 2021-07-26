@@ -25,8 +25,9 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        usePrettierrc: true,
+        usePrettierrc: true, // following prettier rules
+        endOfLine: 'auto',
       },
-    ], // following prettier rules
+    ],
   },
 };
