@@ -1,0 +1,25 @@
+router.get('*', function (req, res, next) {
+  res.setHeader('AUTH', 'BEARER 12341234');
+  const cookies = req.cookies;
+  console.log(cookies);
+  if (!cookies.AUTH) {
+    res.status(403);
+    next(new Error('need login'));
+  }
+  next();
+});
+
+router.all('/', function (req, res, next) {
+  res.data = {
+    cotext: {
+      version: 'v1',
+      expireIn: 60 * 60,
+    },
+  };
+  next();
+});
+
+router.get('/', function (req, res, next) {
+  console.log(res.data);
+  res.json({ data: res.data });
+});
