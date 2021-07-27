@@ -33,32 +33,18 @@ app.use(morgan('dev'));
 app.use(jsonResponse());
 app.use(cookieParser());
 
-app.use(function (req, res, next) {
-  res.a = 'value';
-  res.sum = function (a, b) {
-    return a + b;
-  };
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.a = 'value';
+//   res.sum = function (a, b) {
+//     return a + b;
+//   };
+//   next();
+// });
 
-app.get('/', function (req, res) {
-  const array = [
-    {
-      name: 'shin',
-      value: 10,
-    },
-    {
-      name: 'ahn',
-      value: 30,
-    },
-  ];
-  res.render('index', { array: array });
-});
-
-app.get('/index', function (req, res) {
-  console.log(res.a);
-  return res.send(`${res.sum(3, 6)}`);
-});
+// app.get('/index', function (req, res) {
+//   console.log(res.a);
+//   return res.send(`${res.sum(3, 6)}`);
+// });
 
 app.use(
   session({

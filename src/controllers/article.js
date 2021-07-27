@@ -3,7 +3,8 @@ const Comment = require('../models/comment');
 
 module.exports = {
     createArticle,retrieveArticle, retrieveOneArticle, 
-    updateArticle, deleteArticle, addComment
+    updateArticle, deleteArticle, addComment, getCommentsByArticleId, 
+    deleteComment, updateComment
 }
 /**
  * prefix: /article
@@ -104,6 +105,42 @@ async function addComment(req, res, next){
         const article = await Article.findById(articleId);
         const comment = await article.addComment({content});
         res.json(comment);
+    } catch(err){
+        next(err);
+    }
+}
+
+// GET      '/:articleId/comment'
+async function getCommentsByArticleId(req, res, next){
+    const {articleId} = req.params;
+    try{
+        const comments = await Comment.find({article: articleId})
+                                      .populate('article');
+        res.json(comments);
+    } catch(err){
+        next(err);
+    }
+}
+// PUT      '/:articleId/comment/:commentId'
+async function updateComment(req, res, next){
+    const {articleId, commentId} = req.params;
+    try {
+        const comment = await Comment.findOneAndUpdate(
+            {article: articleId, _id: commentId}
+        );
+        res.json(comment);
+    } catch(err){
+        next(err);
+    }
+}
+// DELETE   '/:articleId/comment/:commentId'
+async function deleteComment(req, res, next){
+    const {articleId, commentId} = req.params;
+    try {
+        const result = await Comment.findOneAndDelete(
+            {article: articleId, _id: commentId}
+        );
+        res.json(result);
     } catch(err){
         next(err);
     }
