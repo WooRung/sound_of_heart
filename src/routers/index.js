@@ -16,11 +16,14 @@ router.post(
   (req, res) => {
     console.log('passport 인증');
     console.log(req.session);
+    console.log(req.user);
     return res.json({ data: 'data' });
   }
 );
 
 router.get('/set-cookie', function (req, res) {
+  console.log(req.user);
+  console.log(req.session);
   res.cookie('cookieName', req.ip, { MaxAge: 1000 * 60 * 2 }).json({
     data: 'cookie 생성 완료.',
   });

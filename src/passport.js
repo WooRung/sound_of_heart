@@ -20,10 +20,46 @@ passport.use(new localStrategy({
 },(username, password, done)=>{
     // 실제적인 검증 로직
     User.authenticate(username, password).then((data)=>{
-        done(null, data);
+        // --> passport.authenticate로 전달할 유저 객체
+        done(null, {
+            _id: data._id,
+            email: data.email,
+            isStaff: data.isStaff
+        });
     }).catch((err)=>{
         done(err)
     })
 }));
+
+/**
+ * 로그인시 세션에 정보 저장 내용 Serialize.
+ * done에서 호출되는 정보가 세션에 저장됨.
+ */
+passport.serializeUser((user, done)=>{
+    return done(null, JSON.stringify({
+        _id: user._id,
+        email: user.email,
+        isStaff: user.isStaff
+    }));
+});
+
+/**
+ * passport.authenticate가 없는 페이지 접근시 유저 정보 제공
+ * done에서 return 되는 user_가 req.user에서 보이는 정보
+ * @param {user: session에 저장된 user정보, done: 콜백} (user, done)=>void
+ */
+passport.deserializeUser(async (user, done)=>{
+    const sessionUser = JSON.parse(user);
+    if (!sessionUser){
+        done(null, false)
+    }
+    try{
+        const user_ = await User.findById(sessionUser._id)
+        return done(null, user_);
+    } catch(err){
+        done(err);
+    }
+    
+})
 
 module.exports = passport;
