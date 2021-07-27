@@ -16,11 +16,13 @@ const emailValidate = [
   {
     validator: async (email) => {
       const model = mongoose.model('User');
-      if (this.isNew) {
-        const user = await model.find({ email: email }).exec();
-        return user.length < 1;
-      }
-      return true;
+
+      // TODO: this.isNew
+      // if (this.isNew) {
+      const user = await model.find({ email: email });
+      return user.length < 1;
+      // }
+      // return false;
     },
   },
 ];
