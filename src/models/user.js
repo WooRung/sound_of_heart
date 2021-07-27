@@ -52,11 +52,11 @@ const User = new Schema({
  * Virtuals
  */
 User.virtual('password')
-  .set((pwd) => {
+  .set(function (pwd) {
     this._password = pwd;
     this.hashed_password = this.createHash(pwd);
   })
-  .get((pwd) => {
+  .get(function (pwd) {
     this._password;
   });
 
@@ -75,9 +75,10 @@ User.methods = {
  * Statics
  */
 User.statics = {
-  //createMember: async function ({ email, password, nickName }) {
-  //  return user;
-  // },
+  createMember: async function ({ email, password, nickName }) {
+    const user = await this.create({ email, password, nickName });
+    return user;
+  },
 };
 
 module.exports = mongoose.model('User', User);

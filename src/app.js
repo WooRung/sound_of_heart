@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const nunjucks = require('nunjucks');
 const createError = require('http-errors');
+const mongoStore = require('connect-mongo');
 
 const router = require('./routers');
 const jsonResponse = require('./middlewares/json-response');
@@ -51,6 +52,10 @@ app.use(
     resave: true,
     saveUninitialized: true,
     secret: process.env.SECRET || 'cat',
+    store: mongoStore.create({
+      mongoUrl: process.env.MONGO_URL,
+      collection: 'sound_of_heart_session',
+    }),
   })
 ); // TODO: Insert option
 
