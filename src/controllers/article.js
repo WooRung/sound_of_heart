@@ -26,12 +26,16 @@ async function createArticle(req, res, next){
 async function retrieveArticle(req, res, next){
     console.log(req.query)
     const {searchKwd, pageSize, pageNum} = req.query;
-    // console.log(searchKwd, pageSize, pageNum);
     
     try {
-        const articles = await Article.find({}, null, {
-            limit: Number.parseInt(pageSize) || 2,
-            skip: (Number.parseInt(pageSize) || 2) * (Number.parseInt(pageNum) -1) 
+        const articles = await Article.find({
+            title:{
+                $regex: `.*${searchKwd || ''}.*` // 정규표현식
+            }
+        }, null, {
+            limit: Number.parseInt(pageSize || 2),
+            skip: ((Number.parseInt(pageSize || 2)) * 
+                  (Number.parseInt(pageNum || 1) -1)), 
         });
         res.json(articles);
     } catch (error){
