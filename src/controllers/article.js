@@ -1,5 +1,10 @@
 const Article = require('../models/article');
+const Comment = require('../models/comment');
 
+module.exports = {
+    createArticle,retrieveArticle, retrieveOneArticle, 
+    updateArticle, deleteArticle, addComment
+}
 /**
  * prefix: /article
  * C.R.U.D
@@ -85,7 +90,21 @@ async function deleteArticle(req, res, next){
     }
 }
 
-module.exports = {
-    createArticle,retrieveArticle, retrieveOneArticle, 
-    updateArticle, deleteArticle
+/**
+ * Add Comment of article 
+ * POST     '/:articleId/comment'
+ * @param {Object{articleId}} req.params
+ * @param {Object{content}} req.body
+ */
+async function addComment(req, res, next){ 
+    const {articleId} = req.params;
+    const {content} = req.body;
+    
+    try{
+        const article = await Article.findById(articleId);
+        const comment = await article.addComment({content});
+        res.json(comment);
+    } catch(err){
+        next(err);
+    }
 }

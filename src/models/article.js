@@ -28,6 +28,10 @@ const Article = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    comments: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Comment'
     }
 });
 /**
@@ -44,6 +48,11 @@ Article.methods = {
     makeShort: function(title){
         return title.slice(0, 10);
     },
+    addComment: async function({content}){
+        const comment = await mongoose.model('Comment').create({content: content, 
+                                                                article: this._id});
+        return comment
+    }
     // makeShort2: (title)=>{
     //     console.log(this);
     //     return title.slice(0,10)
