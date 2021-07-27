@@ -8,8 +8,6 @@ dotenv.config({
       ? path.resolve(__dirname, '.env')
       : path.resolve(__dirname, '.development.env'),
 });
-// console.log(process.env);
-console.log(process.env.MONGO_URL);
 
 const app = require('./src/app');
 const http = require('http');

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validators = require('validators');
+const validator = require('validator');
 const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const emailValidate = [
   {
     validator: (email) => {
-      return validators.isEmail(email);
+      return validator.isEmail(email);
     },
     message: (props) => {
       return `${props.path} is not email style, got ${props.value}`;
@@ -80,5 +80,4 @@ User.statics = {
   // },
 };
 
-console.log(User);
 module.exports = mongoose.model('User', User);
