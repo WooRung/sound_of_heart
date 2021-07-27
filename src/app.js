@@ -13,6 +13,7 @@ const mongoStore = require('connect-mongo');
 
 const router = require('./routers');
 const jsonResponse = require('./middlewares/json-response');
+const passport = require('./passport');
 
 /**
  * Initialize express application
@@ -58,6 +59,7 @@ app.use(
     }),
   })
 ); // TODO: Insert option
+app.use(passport.initialize());
 
 // qs vs queryset
 app.use(express.urlencoded({ extended: true }));

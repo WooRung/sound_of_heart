@@ -81,6 +81,14 @@ User.statics = {
     const user = await this.create({ email, password, nickName });
     return user;
   },
+  authenticate: async function (email, password) {
+    const user = await this.findOne({ email: email });
+    if (!user) return false;
+
+    if (bcrypt.compareSync(password, user.hashed_password)) {
+      return user;
+    }
+  },
 };
 
 module.exports = mongoose.model('User', User);
