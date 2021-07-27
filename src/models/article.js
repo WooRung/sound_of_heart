@@ -52,6 +52,7 @@ Article.methods = {
 
  /**
   * Statics: Schema단위로 실행되는 함수.
+  * Model의 Manager로 사용할 예정입니다.
   */
 Article.statics = {
     createArticle: async function({title, content}){
