@@ -49,7 +49,6 @@ passport.use(
       secretOrKey: process.env.JWT_SECRET,
     },
     function (payload, done) {
-      console.log(payload);
       return done(null, payload);
     }
   )
