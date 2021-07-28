@@ -1,8 +1,10 @@
 const router = require('express').Router();
-const { createUser } = require('../controllers/user');
 const articleRouter = require('./article-api');
+const authAPIRouter = require('./auth-api');
+const siteRouter = require('./site');
 
-router.post('/user', createUser);
 router.use('/article', articleRouter);
+router.use('/auth', authAPIRouter);
+router.use('/', siteRouter);
 
 module.exports = router;
