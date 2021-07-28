@@ -21,6 +21,14 @@ router.get('/sock/:roomId', (req, res) => {
   res.render('socketio_test', { roomId: roomId });
 });
 
+router.get('/chatroom', (req, res) => {
+  res.redirect(`/chatroom/${uuidv4()}`);
+});
+router.get('/chatroom/:roomId', (req, res) => {
+  const { roomId } = req.params;
+  res.render('chatroom', { roomId: roomId });
+});
+
 // router.get('/', function (req, res) {
 //   console.log('session', req.session);
 //   console.log('cookies', req.cookies);

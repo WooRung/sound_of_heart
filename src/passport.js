@@ -44,6 +44,9 @@ passport.use(
 );
 passport.use(
   new JWTStrategy(
+    // JWT는 SECRET_KEY를 필요로 함.
+    // JWTStrategy가 내부에서 jsonwebtoken 라이브러리 사용.
+    // sign() = 서명, verify() = 검증 하려면 secret_key가 필요.
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('Authorization'),
       secretOrKey: process.env.JWT_SECRET,

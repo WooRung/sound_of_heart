@@ -27,5 +27,7 @@ socket.on('message', (msg) => {
 });
 
 function sendMessage() {
+  console.log('A');
+  console.log(socket);
   socket.emit('message', 'sendMessage!');
 }
