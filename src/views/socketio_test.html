@@ -1,0 +1,24 @@
+{% extends "layouts/layout1.html" %}
+{% block styles %}
+  {{ super() }}
+{% endblock %}
+
+{% block contents %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-6" style="margin:auto; text-align: center; margin-top: 4rem;">
+      <main id="main">
+
+      </main>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/socket.io/socket.io.js"></script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/script.js"></script>
+{% endblock %}

@@ -7,6 +7,13 @@ const siteRouter = require('./site');
 router.use('/api', apiRouter);
 router.use('/', siteRouter);
 
+router.use('/sock', (req, res) => {
+  res.render('socketio_test');
+});
+router.use('/sock/:roomId', (req, res) => {
+  res.render('socketio_test');
+});
+
 // router.get('/', function (req, res) {
 //   console.log('session', req.session);
 //   console.log('cookies', req.cookies);
