@@ -14,6 +14,7 @@ const mongoStore = require('connect-mongo');
 const router = require('./routers');
 const jsonResponse = require('./middlewares/json-response');
 const passport = require('./passport');
+const configHelmet = require('./helmet');
 
 /**
  * Initialize express application
@@ -30,7 +31,7 @@ nunjucks.configure(path.join(__dirname, 'views'), {
 /**
  * Apply middlewares to express app
  */
-app.use(helmet());
+configHelmet(app);
 app.use(morgan('dev'));
 app.use(jsonResponse());
 app.use(cookieParser());
