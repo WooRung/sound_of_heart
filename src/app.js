@@ -69,7 +69,7 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // body-parser
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/static', express.static(path.join(__dirname, '../public')));
 
 /**
  * Use routers

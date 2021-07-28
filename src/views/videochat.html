@@ -1,7 +1,7 @@
 {% extends "layouts/layout1.html" %}
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/static/style.css">
 {%endblock%}
 {%block scripts%}
 <script src="/socket.io/socket.io.js"></script>
@@ -68,5 +68,5 @@
 
 
 {%block extra_scripts%}
-<script src="/script.js"></script>
+<script src="/static/script.js"></script>
 {%endblock%}
