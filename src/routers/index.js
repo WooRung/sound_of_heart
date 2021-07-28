@@ -2,14 +2,16 @@ const router = require('express').Router();
 const apiRouter = require('./api');
 const passport = require('../passport');
 const jwt = require('jsonwebtoken');
+const siteRouter = require('./site');
 
 router.use('/api', apiRouter);
+router.use('/', siteRouter);
 
-router.get('/', function (req, res) {
-  console.log('session', req.session);
-  console.log('cookies', req.cookies);
-  return res.json({ data: 1 });
-});
+// router.get('/', function (req, res) {
+//   console.log('session', req.session);
+//   console.log('cookies', req.cookies);
+//   return res.json({ data: 1 });
+// });
 
 router.post(
   '/login',
