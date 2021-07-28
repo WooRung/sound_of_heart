@@ -1,15 +1,6 @@
-{% extends "./layout/common_layout.html" %}
-{% block contents_wrap %}
-    {% set value=3 %}
-    <div style="margin-top:100px;">
-        {% for item in array %}
-            {{ item.name }} - {{ item.value }} 
-        {% endfor %}
-
-        {% if value==3 %}
-            {{value}} is 3
-        {%endif%}
-        
-        <h1>block contents_wrap</h1>
-    </div>
+{% extends "layouts/layout1.html" %}
+{% block contents %}
+  <div class="container" style="text-align: center;">
+    <h1>Permission to Video Chat</h1>
+  </div>
 {% endblock %}
