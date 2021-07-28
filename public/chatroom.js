@@ -5,29 +5,15 @@ socket.on('connect', function () {
   console.log('connect');
 });
 
-socket.on('add-li', (msg) => {
-  console.log(msg);
-  const li = document.createElement('li');
-  li['textContent'] = msg;
-  document.querySelector('main#main').appendChild(li);
-});
-socket.emit('event1', 'initial event!');
-// -----------------------------------
-socket.emit('join-room', roomId);
-
-function leaveRoom() {
-  socket.emit('leave-room', roomId);
+function sendMessage() {
+  const input = document.querySelector('input#msg');
+  console.log(input.value);
+  input.value = '';
 }
 
-socket.on('message', (msg) => {
-  console.log(msg);
+function createMessagebox(msg) {
   const div = document.createElement('div');
+  div.classList.add('msgbox');
   div['textContent'] = msg;
   document.querySelector('main#main').appendChild(div);
-});
-
-function sendMessage() {
-  console.log('A');
-  console.log(socket);
-  socket.emit('message', 'sendMessage!');
 }
