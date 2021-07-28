@@ -19,15 +19,11 @@ module.exports = (io) => {
 
   const chatRoom = io.of('/CHATROOM');
   chatRoom.on('connection', (socket) => {
-    console.log('chatroom connection');
-
-    socket.on('disconnect', () => {
-      console.log('연결 종료');
-      clearInterval(socket.interval);
+    socket.on('join-room', (roomId) => {
+      socket.join(roomId);
     });
-
-    socket.interval = setInterval(() => {
-      socket.emit('add-li', 'Hello SOCKET.IO.js');
-    }, 3000);
+    socket.on('leave-room', (roomId) => {
+      socket.leave(roomId);
+    });
   });
 };

@@ -17,6 +17,9 @@
 
 {% block scripts %}
 <script src="/socket.io/socket.io.js"></script>
+<script>
+  const roomId = "{{ roomId }}";
+</script>
 {% endblock %}
 
 {% block extra_scripts %}

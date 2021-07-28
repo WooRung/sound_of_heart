@@ -3,15 +3,22 @@ const apiRouter = require('./api');
 const passport = require('../passport');
 const jwt = require('jsonwebtoken');
 const siteRouter = require('./site');
+const { v4: uuidv4 } = require('uuid');
 
 router.use('/api', apiRouter);
 router.use('/', siteRouter);
 
-router.use('/sock', (req, res) => {
+router.get('/sock', (req, res) => {
   res.render('socketio_test');
 });
-router.use('/sock/:roomId', (req, res) => {
-  res.render('socketio_test');
+
+router.get('/sock/getRoom', (req, res) => {
+  res.redirect(`/sock/${uuidv4()}`);
+});
+
+router.get('/sock/:roomId', (req, res) => {
+  const { roomId } = req.params;
+  res.render('socketio_test', { roomId: roomId });
 });
 
 // router.get('/', function (req, res) {

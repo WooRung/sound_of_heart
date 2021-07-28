@@ -10,6 +10,7 @@ module.exports = (app) => {
             'https://kit.fontawesome.com',
             'https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js',
             'https://unpkg.com',
+            "'unsafe-inline'",
           ],
           styleSrc: [
             "'self'",
