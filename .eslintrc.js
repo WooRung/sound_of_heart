@@ -14,7 +14,7 @@ module.exports = {
     },
   },
   env: {
-    browser: false, // no browser object
+    browser: true, // no browser object
     node: true, // node env
     commonjs: true,
   },
