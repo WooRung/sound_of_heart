@@ -11,11 +11,11 @@ socket.emit('join-room', roomId, username);
 
 socket.on('msg:broad', (msg) => {
   console.log(msg);
-  createMessagebox(`공지: ${msg}`);
+  createMessagebox(`공지: ${msg}`, 'notice');
 });
 socket.on('msg:get', (msg) => {
   console.log(msg);
-  createMessagebox(msg);
+  createMessagebox(msg, 'normal');
 });
 
 function sendMessage() {
@@ -23,12 +23,25 @@ function sendMessage() {
   const data = input.value;
   input.value = '';
   socket.emit('msg:send', data);
-  createMessagebox(`${username}: ${data}`);
+  createMessagebox(`${username}: ${data}`, 'my');
 }
 
-function createMessagebox(msg) {
+function createMessagebox(msg, type = 'normal') {
   const div = document.createElement('div');
-  div.classList.add('msgbox');
-  div['textContent'] = msg;
+  const p = document.createElement('p');
+  div.appendChild(p);
+  p.classList.add('msgbox');
+  p['textContent'] = msg;
+  switch (type) {
+    case 'normal':
+      p.classList.add('normal');
+      break;
+    case 'notice':
+      p.classList.add('notice');
+      break;
+    case 'my':
+      p.classList.add('my');
+      break;
+  }
   document.querySelector('main#main').appendChild(div);
 }

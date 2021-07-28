@@ -9,8 +9,18 @@
 }
 .msgbox {
   min-width: 100px;
-  min-height: 80px;
+  min-height: 50px;
   border: 1px solid black;
+}
+.msgbox.normal{
+  text-align: left;
+}
+.msgbox.my{
+  text-align:right;
+}
+.msgbox.notice{
+  text-align: center;
+  color:#2f80ec;
 }
 
 * {
