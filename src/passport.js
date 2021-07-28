@@ -3,17 +3,22 @@ const passport = require('passport');
 // username - password
 const localStrategy = require('passport-local').Strategy;
 // token 방식 (Bearer Token)
-const bearerStrategy = require('passport-http-bearer').Strategy;
+// const bearerStrategy = require('passport-http-bearer').Strategy;
+
+// jwt.verify, jwt.sign 함수.
+const jwt = require('jsonwebtoken');
+const passportJwt = require('passport-jwt');
+
+const JWTStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
 
 const User = require('./models/user');
-
 /**
  * passport = 라우터와 비슷.
  * passport.use(<Strategy>,
  *              <cb(username, password, done<(err, user, message)>)>
  *             )
  */
-
 passport.use(
   new localStrategy(
     {
@@ -37,6 +42,18 @@ passport.use(
     }
   )
 );
+passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('Authorization'),
+      secretOrKey: process.env.JWT_SECRET,
+    },
+    function (payload, done) {
+      console.log(payload);
+      return done(null, payload);
+    }
+  )
+);
 
 /**
  * 로그인시 세션에 정보 저장 내용 Serialize.
@@ -55,7 +72,7 @@ passport.serializeUser((user, done) => {
 
 /**
  * passport.authenticate가 없는 페이지 접근시 유저 정보 제공
- * done에서 return 되는 user_가 req.user에서 보이는 정보
+ *
  * @param {user: session에 저장된 user정보, done: 콜백} (user, done)=>void
  */
 passport.deserializeUser(async (user, done) => {

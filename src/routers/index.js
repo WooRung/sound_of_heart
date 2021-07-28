@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const apiRouter = require('./api');
 const passport = require('../passport');
+const jwt = require('jsonwebtoken');
 
 router.use('/api', apiRouter);
 
@@ -11,13 +12,24 @@ router.get('/', function (req, res) {
 });
 
 router.post(
-  '/',
+  '/login',
   passport.authenticate('local', { failureLogin: '/login' }),
   (req, res) => {
     console.log('passport 인증');
     console.log(req.session);
     console.log(req.user);
-    return res.json({ data: 'data' });
+    const token = jwt.sign(req.user, process.env.JWT_SECRET);
+
+    return res.json({ token });
+  }
+);
+
+router.get(
+  '/token',
+  passport.authenticate('jwt', { session: false }),
+  function (req, res) {
+    console.log(req.user);
+    res.json('token auth 완료');
   }
 );
 
