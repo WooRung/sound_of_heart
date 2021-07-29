@@ -33,6 +33,7 @@ passport.use(
           done(null, {
             _id: data._id,
             email: data.email,
+            nickName: data.nickName,
             isStaff: data.isStaff,
           });
         })

@@ -1,36 +1,95 @@
-{% extends "layouts/layout1.html" %}
-{% block styles %}
-  {{ super() }}
-{% endblock %}
-
-{% block contents %}
+{% extends "layouts/layout1.html" %} {% block styles %} {{ super() }} {%
+endblock %} {% block contents %}
 <div class="container">
   <div class="row">
-    <div class="col-12 col-lg-6" style="margin:auto; text-align: center; margin-top: 4rem;">
+    <div
+      class="col-12 col-lg-6"
+      style="margin: auto; text-align: center; margin-top: 4rem"
+    >
       <main class="form-signin">
         <form style>
-          <img class="mb-4" src="https://getbootstrap.com//docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+          <img
+            class="mb-4"
+            src="https://getbootstrap.com//docs/5.0/assets/brand/bootstrap-logo.svg"
+            alt=""
+            width="72"
+            height="57"
+          />
           <h1 class="h3 mb-3 fw-normal">Please Login</h1>
-      
+
           <div class="form-floating">
-            <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="email">
+            <input
+              type="email"
+              class="form-control"
+              id="emailInput"
+              placeholder="name@example.com"
+              name="email"
+            />
             <label for="emailInput">Email address</label>
           </div>
           <div class="form-floating">
-            <input type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
+            <input
+              type="password"
+              class="form-control"
+              id="passwordInput"
+              placeholder="Password"
+              name="password"
+            />
             <label for="passwordInput">Password</label>
           </div>
-      
+
           <div class="checkbox mb-3">
             <label>
-              <input type="checkbox" value="remember-me"> Remember me
+              <input type="checkbox" value="remember-me" /> Remember me
             </label>
           </div>
-          <button class="w-100 btn btn-lg btn-primary" type="button">Login</button>
+          <button
+            class="w-100 btn btn-lg btn-primary"
+            type="button"
+            onClick="clientLogin()"
+          >
+            Login
+          </button>
           <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
         </form>
       </main>
     </div>
   </div>
 </div>
+{% endblock %} {% block extra_scripts %}
+<script>
+  function clientLogin() {
+    // login구현 실습
+    /**
+     * 로그인 진행 => 로그인 성공시 localStorage 저장 =>
+     */
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const data = {
+      email: emailInput.value,
+      password: passwordInput.value,
+    };
+
+    // 로그인 진행 => 로그인 성공시 localStorage 저장 => redirect('/) => 3min
+    fetch('/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((resp) => {
+        if (200 <= resp.status < 300) {
+          return resp.json();
+        } else {
+        }
+      })
+      .then((body) => {
+        console.log(body);
+        console.log(body.data.token);
+        localStorage['authToken'] = body.data.token;
+        window.location.href = '/videochat';
+      });
+  }
+</script>
 {% endblock %}

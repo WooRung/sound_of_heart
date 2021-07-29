@@ -21,7 +21,7 @@ module.exports = {
   },
   renderVideochat: function (req, res) {
     const { chatId } = req.params;
-    res.render('videochat', { roomId: chatId });
+    res.render('videochat', { roomId: chatId, user: req.user });
   },
   getVideochatId: (preUrl) =>
     function (req, res) {

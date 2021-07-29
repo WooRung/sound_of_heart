@@ -21,4 +21,13 @@ router.post('/getToken', passport.authenticate('local', {}), (req, res) => {
 
 router.post('/register', createUser);
 
+router.post('/logout', (req, res) => {
+  console.log(req.session);
+  // res.session = null; // cookie
+  req.session.destroy(); // db에 session 삭제.
+  res.json({
+    message: 'logout success!',
+  });
+});
+
 module.exports = router;

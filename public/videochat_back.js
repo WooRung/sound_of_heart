@@ -15,14 +15,16 @@ const peer = new Peer(undefined, {
   path: '/peerjs/videochat',
   host: '/',
   port: '3000',
-  //   debug: 4,
+  debug: 4,
 });
 let myPeerId;
+
 peer.on('open', (peerId) => {
   myPeerId = peerId;
   console.log('peer opend! peerId: ', peerId);
   socket.emit('join-room', ROOM_ID, username, myPeerId);
 });
+
 navigator.mediaDevices
   .getUserMedia({
     video: true,
@@ -33,8 +35,6 @@ navigator.mediaDevices
     addVideo(videoElem, stream);
 
     peer.on('call', (call) => {
-      call.answer(stream);
-
       const newVideo = document.createElement('video');
       call.on('stream', (videoStream) => {
         console.log('stream1');
@@ -45,8 +45,7 @@ navigator.mediaDevices
 
     socket.on('user-connected', (peerId) => {
       const call = peer.call(peerId, userVideoStream);
-      console.log('user-connected');
-      console.log(call);
+
       const newVideo = document.createElement('video');
       call.on('stream', (videoStream) => {
         console.log('stream2');
@@ -72,6 +71,10 @@ function addVideo(videoElem, stream) {
  */
 
 let messages = document.querySelector('.messages');
+
+// socket.on('connect', function () {
+//   console.log('socket connect');
+// });
 
 socket.on('message', (username, msg) => {
   const msg_html = createMessage(username, msg);

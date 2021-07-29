@@ -1,36 +1,101 @@
-{% extends "layouts/layout1.html" %}
-{% block styles %}
-  {{ super() }}
-{% endblock %}
-
-{% block contents %}
+{% extends "layouts/layout1.html" %} {% block styles %} {{ super() }} {%
+endblock %} {% block contents %}
 <div class="container">
   <div class="row">
-    <div class="col-12 col-lg-6" style="margin:auto; text-align: center; margin-top: 4rem;">
+    <div
+      class="col-12 col-lg-6"
+      style="margin: auto; text-align: center; margin-top: 4rem"
+    >
       <main class="form-signin">
         <form style>
-          <img class="mb-4" src="https://getbootstrap.com//docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+          <img
+            class="mb-4"
+            src="https://getbootstrap.com//docs/5.0/assets/brand/bootstrap-logo.svg"
+            alt=""
+            width="72"
+            height="57"
+          />
           <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
-      
+
           <div class="form-floating">
-            <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="email">
+            <input
+              type="email"
+              class="form-control"
+              id="emailInput"
+              placeholder="name@example.com"
+              name="email"
+            />
             <label for="emailInput">Email address</label>
           </div>
           <div class="form-floating">
-            <input type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
+            <input
+              type="password"
+              class="form-control"
+              id="passwordInput"
+              placeholder="Password"
+              name="password"
+            />
             <label for="passwordInput">Password</label>
           </div>
-      
-          <div class="checkbox mb-3">
-            <label>
-              <input type="checkbox" value="remember-me"> Remember me
-            </label>
+
+          <div class="form-floating">
+            <input
+              type="nickname"
+              class="form-control"
+              id="nicknameInput"
+              placeholder="Nickname"
+              name="nickname"
+            />
+            <label for="nicknameInput">Nickname</label>
           </div>
-          <button class="w-100 btn btn-lg btn-primary" type="button">Sign up</button>
+
+          <button
+            class="w-100 btn btn-lg btn-primary"
+            type="button"
+            onClick="register();"
+          >
+            Sign up
+          </button>
           <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
         </form>
       </main>
     </div>
   </div>
 </div>
+{% endblock %} {% block extra_scripts %}
+<script>
+  function register() {
+    // 각각 input값에 접근을 해서 element들의 value값을 저장.
+    const emailInput = document.getElementById('emailInput');
+    const pwdInput = document.getElementById('passwordInput');
+    const nicknameInput = document.getElementById('nicknameInput');
+
+    const data = {
+      email: emailInput.value,
+      password: pwdInput.value,
+      nickname: nicknameInput.value,
+    };
+    console.log(data);
+
+    fetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((resp) => {
+        console.log(resp);
+        if (200 <= resp.status < 300) {
+          return resp.json();
+        } else {
+          // validation error or error handle
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.href = '/login';
+      });
+  }
+</script>
 {% endblock %}

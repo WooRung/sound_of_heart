@@ -13,6 +13,7 @@ module.exports = (io) => {
     });
     socket.on('join-room', (roomId, username, peerId) => {
       socket.join(roomId);
+      socket.to(roomId).emit('user-connected', peerId);
 
       vcNsc
         .to(roomId)
