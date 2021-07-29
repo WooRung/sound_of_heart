@@ -10,8 +10,12 @@ dotenv.config({
       ? path.resolve(__dirname, '.env')
       : path.resolve(__dirname, '.development.env'),
 });
+/**
+ * Initialize express application
+ */
 
-const app = require('./src/app');
+const app = require('express')();
+
 const http = require('http');
 
 const server = http.createServer(app);
@@ -23,6 +27,9 @@ const io = SocketIO(server, {
   path: '/socket.io',
   transports: ['websocket', 'polling'],
 });
+app.set('io', io);
+const configApp = require('./src/app');
+configApp(app);
 
 const Peer = require('peer');
 const peerServer = Peer.ExpressPeerServer(server, {
@@ -30,12 +37,11 @@ const peerServer = Peer.ExpressPeerServer(server, {
   debug: true,
 });
 app.use('/peerjs', peerServer);
+const sock = require('./socketio');
+sock(io);
 
 const errorHandler = require('./src/error_handler');
 errorHandler(app);
-
-const sock = require('./socketio');
-sock(io);
 
 // io.on('connection', (socket) => {
 //   const req = socket.request;

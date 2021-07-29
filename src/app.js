@@ -15,52 +15,46 @@ const router = require('./routers');
 const jsonResponse = require('./middlewares/json-response');
 const passport = require('./passport');
 const configHelmet = require('./helmet');
+module.exports = (app) => {
+  app.set('view engine', 'html'); // view file extension: html
+  nunjucks.configure(path.join(__dirname, 'views'), {
+    watch: true,
+    autoescape: true,
+    express: app,
+  });
 
-/**
- * Initialize express application
- */
-const app = express();
+  /**
+   * Apply middlewares to express app
+   */
+  configHelmet(app);
+  app.use(morgan('dev'));
+  app.use(jsonResponse());
+  app.use(cookieParser());
 
-app.set('view engine', 'html'); // view file extension: html
-nunjucks.configure(path.join(__dirname, 'views'), {
-  watch: true,
-  autoescape: true,
-  express: app,
-});
+  app.use(
+    session({
+      resave: true,
+      saveUninitialized: true,
+      secret: process.env.SECRET || 'cat',
+      store: mongoStore.create({
+        mongoUrl: process.env.MONGO_URL,
+        collection: 'sound_of_heart_session',
+      }),
+    })
+  ); // TODO: Insert option
 
-/**
- * Apply middlewares to express app
- */
-configHelmet(app);
-app.use(morgan('dev'));
-app.use(jsonResponse());
-app.use(cookieParser());
+  // Passport 미들웨어 등록
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-app.use(
-  session({
-    resave: true,
-    saveUninitialized: true,
-    secret: process.env.SECRET || 'cat',
-    store: mongoStore.create({
-      mongoUrl: process.env.MONGO_URL,
-      collection: 'sound_of_heart_session',
-    }),
-  })
-); // TODO: Insert option
+  // qs vs queryset
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json()); // body-parser
 
-// Passport 미들웨어 등록
-app.use(passport.initialize());
-app.use(passport.session());
+  app.use('/static', express.static(path.join(__dirname, '../public')));
 
-// qs vs queryset
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // body-parser
-
-app.use('/static', express.static(path.join(__dirname, '../public')));
-
-/**
- * Use routers
- */
-app.use('/', router);
-
-module.exports = app;
+  /**
+   * Use routers
+   */
+  app.use('/', router);
+};
