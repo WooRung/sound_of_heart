@@ -36,19 +36,6 @@ app.use(morgan('dev'));
 app.use(jsonResponse());
 app.use(cookieParser());
 
-// app.use(function (req, res, next) {
-//   res.a = 'value';
-//   res.sum = function (a, b) {
-//     return a + b;
-//   };
-//   next();
-// });
-
-// app.get('/index', function (req, res) {
-//   console.log(res.a);
-//   return res.send(`${res.sum(3, 6)}`);
-// });
-
 app.use(
   session({
     resave: true,

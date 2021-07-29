@@ -1,40 +1,32 @@
-{% extends "layouts/layout1.html" %}
-{% block styles %}
-  {{ super() }}
-  <link href="/static/style.css" rel="stylesheet" >
-{% endblock %}
-
-{% block contents %}
+{% extends "layouts/layout1.html" %} {% block styles %} {{ super() }}
+<link href="/static/style.css" rel="stylesheet" />
+{% endblock %} {% block contents %}
 <div class="container">
   <div class="row">
-    <div class="col-12 col-lg-8" style="margin:auto; text-align: center; margin-top: 4rem;">
-      <main id="main">
-
-      </main>
-      <div style="display:flex;">
-        <input class="form-control" type="text" 
-               id="msg" name="msg" />
-        <button class="btn btn-primary" 
-              type="button" 
-              style="min-width:100px;"
-              onClick="javascript:sendMessage()">
+    <div
+      class="col-12 col-lg-8"
+      style="margin: auto; text-align: center; margin-top: 4rem"
+    >
+      <main id="main"></main>
+      <div style="display: flex">
+        <input class="form-control" type="text" id="msg" name="msg" />
+        <button
+          class="btn btn-primary"
+          type="button"
+          style="min-width: 100px"
+          onClick="javascript:sendMessage()"
+        >
           전송
         </button>
       </div>
-      
-      
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const roomId = "{{ roomId }}";
+  const roomId = '{{ roomId }}';
 </script>
-{% endblock %}
-
-{% block extra_scripts %}
+{% endblock %} {% block extra_scripts %}
 <script src="/static/chatroom.js"></script>
 {% endblock %}

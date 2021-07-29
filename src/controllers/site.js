@@ -5,7 +5,9 @@
  * 2. renderLogin
  * 3. renderIndex
  * 4. renderVideochat
+ * 5. getVideochatId
  */
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   renderSignup: function (req, res) {
@@ -18,6 +20,11 @@ module.exports = {
     res.render('index');
   },
   renderVideochat: function (req, res) {
-    res.render('videochat');
+    const { chatId } = req.params;
+    res.render('videochat', { roomId: chatId });
   },
+  getVideochatId: (preUrl) =>
+    function (req, res) {
+      res.redirect(`${preUrl}/${uuidv4()}`);
+    },
 };
