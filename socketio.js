@@ -15,12 +15,15 @@ module.exports = (io) => {
     socket.on('join-room', (roomId, username) => {
       socket.join(roomId);
 
-      vcNsc.to(roomId).emit('message', `${username} 님이 입장하였습니다.`);
+      vcNsc
+        .to(roomId)
+        .emit('message', username, `${username} 님이 입장하였습니다.`);
 
       socket.on('chat', (msg) => {
         console.log(msg);
         vcNsc.to(roomId).emit('message', username, msg);
       });
+
       socket.on('leave-room', () => {
         socket.leave(roomId);
       });

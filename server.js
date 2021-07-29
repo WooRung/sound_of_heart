@@ -24,6 +24,16 @@ const io = SocketIO(server, {
   transports: ['websocket', 'polling'],
 });
 
+const Peer = require('peer');
+const peerServer = Peer.ExpressPeerServer(server, {
+  path: '/videochat',
+  debug: true,
+});
+app.use('/peerjs', peerServer);
+
+const errorHandler = require('./src/error_handler');
+errorHandler(app);
+
 const sock = require('./socketio');
 sock(io);
 
