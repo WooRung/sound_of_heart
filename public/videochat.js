@@ -3,35 +3,59 @@
  * [/videochat] Client Event
  * @event "message": message 전달
  */
+const socket = io('/videochat');
+let username;
+username = '팬더';
 
 const videoGrid = document.querySelector('#video-grid');
 const videoElem = document.createElement('video');
 
 let videoStream;
+const peer = new Peer(undefined, {
+  path: '/peerjs/videochat',
+  host: '/',
+  port: '3000',
+  debug: 4,
+});
+console.log(peer);
+
+peer.on('open', (peerId) => {
+  console.log('peer opend! peerId: ', peerId);
+  socket.emit('join-room', ROOM_ID, peerId);
+});
 
 navigator.mediaDevices
   .getUserMedia({
     video: true,
   })
   .then((stream) => {
-    console.log(stream);
-    videoElem.srcObject = stream;
+    // console.log(stream);
     videoStream = stream;
-    videoElem.addEventListener('loadedmetadata', () => {
-      videoElem.play();
-      videoGrid.append(videoElem);
+    addVideo(videoElem, stream);
+
+    peer.on('call', (call) => {
+      console.log(call);
+      const newVideo = document.createElement('video');
+      call.on('stream', (videoStream) => {
+        addVideo(newVideo, videoStream);
+      });
     });
   })
   .catch((err) => {
     console.error(err);
   });
 
+function addVideo(videoElem, stream) {
+  videoElem.srcObject = stream;
+  videoElem.addEventListener('loadedmetadata', () => {
+    videoElem.play();
+    videoGrid.append(videoElem);
+  });
+}
+
 /**
  * socket.io 영역
  */
-const socket = io('/videochat');
-let username;
-username = '팬더';
 
 let messages = document.querySelector('.messages');
 

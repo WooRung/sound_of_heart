@@ -8,11 +8,10 @@ module.exports = (io) => {
    */
   const vcNsc = io.of('/videochat');
   vcNsc.on('connection', (socket) => {
-    console.log(socket);
     vcNsc.on('notice', (notice) => {
       vcNsc.emit('message', notice);
     });
-    socket.on('join-room', (roomId, username) => {
+    socket.on('join-room', (roomId, username, peerId) => {
       socket.join(roomId);
 
       vcNsc
@@ -20,7 +19,6 @@ module.exports = (io) => {
         .emit('message', username, `${username} 님이 입장하였습니다.`);
 
       socket.on('chat', (msg) => {
-        console.log(msg);
         vcNsc.to(roomId).emit('message', username, msg);
       });
 
