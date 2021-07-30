@@ -10,14 +10,27 @@ username = '팬더';
 const videoGrid = document.querySelector('#video-grid');
 const videoElem = document.createElement('video');
 
-let userVideoStream;
 const peer = new Peer(undefined, {
   // path: '/peerjs/videochat',
   // host: '/',
   // port: '3000',
   // debug: 4,
 });
-let myPeerId;
+
+/**
+ * [Init]
+ * 1. 자신의 카메라의 myStream을 받아온다.
+ * 2. myStream을 video element에 추가하여 재생한다.
+ * 3. 다른 피어의 연결을 대기하는 event 추가.
+ *
+ * [다른 peer가 연결했을때 (다른 peer가 call 했을 경우)]
+ * 1. peer에 응답을 준다. (myStream)
+ * 2. peer로부터 stream을 받는 이벤트리스너를 등록
+ *
+ * [다른 peer를 call할 때]
+ * 1. peer로 call 한다.
+ * 2. peer로 stream을 받는 이벤트리스너 등록
+ */
 
 navigator.mediaDevices
   .getUserMedia({
@@ -25,6 +38,34 @@ navigator.mediaDevices
   })
   .then((stream) => {
     addVideo(videoElem, stream);
+    peer.on('call', (call) => {
+      console.log('peer call');
+      call.answer(stream);
+
+      const newVideoElem = document.createElement('video');
+      call.on('stream', (remoteStream) => {
+        addVideo(newVideoElem, remoteStream);
+      });
+    });
+    socket.on('user-connected', (peerId) => {
+      // 다른 유저가 연결? ==> 해당 유저의 peer를 call!
+      console.log('user-connected', peerId);
+      const newVideoElem = document.createElement('video');
+
+      const call = peer.call(peerId, stream);
+
+      call.on('stream', (remoteStream) => {
+        addVideo(newVideoElem, remoteStream);
+      });
+      call.on('close', () => {
+        newVideoElem.remove();
+      });
+      // call.on('stream', (remoteStream) => {
+      //   addVideo(newVideoElem, remoteStream);
+      // });
+    });
+
+    // 다른 peer를 call할 때 (peerId)
   });
 
 // navigator.mediaDevices
@@ -63,7 +104,6 @@ navigator.mediaDevices
 //     });
 //   });
 peer.on('open', (peerId) => {
-  myPeerId = peerId;
   console.log('peer opend! peerId: ', peerId);
   socket.emit('join-room', ROOM_ID, username, peerId);
 });
@@ -71,9 +111,9 @@ peer.on('open', (peerId) => {
 function addVideo(videoElem, stream) {
   console.log('add Video');
   videoElem.srcObject = stream;
+  videoGrid.append(videoElem);
   videoElem.addEventListener('loadedmetadata', () => {
     videoElem.play();
-    videoGrid.append(videoElem);
   });
 }
 

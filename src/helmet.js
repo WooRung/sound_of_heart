@@ -19,7 +19,12 @@ module.exports = (app) => {
             "'unsafe-inline'",
           ],
           imgSrc: ["'self'", 'data:'],
-          connectSrc: ["'self'", 'https://ka-f.fontawesome.com'],
+          connectSrc: [
+            "'self'",
+            'https://ka-f.fontawesome.com',
+            'https://0.peerjs.com',
+            'wss://0.peerjs.com',
+          ],
           fontSrc: [
             "'self'",
             'https://fonts.gstatic.com',
