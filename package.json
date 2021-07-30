@@ -6,8 +6,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development nodemon server.js ",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --fix --ext .js ."
+    "test": "jest",
+    "lint": "eslint --fix --ext .js .",
+    "coverage": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -38,6 +39,7 @@
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.6",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2"
   }

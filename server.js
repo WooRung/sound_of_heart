@@ -20,12 +20,24 @@ const http = require('http');
 
 const server = http.createServer(app);
 
+/**
+ * socket middleware 작성
+ */
+// const authMiddleware = require('./src/middlewares/auth-middleware');
+
 const io = SocketIO(server, {
   cors: {
     origin: '*',
   },
   path: '/socket.io',
   transports: ['websocket', 'polling'],
+});
+io.use((socket, next) => {
+  /**
+   * socket.io middlewared
+   */
+  next();
+  //   // authMiddleware(socket.request, socket.request.res, next);
 });
 app.set('io', io);
 

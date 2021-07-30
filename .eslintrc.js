@@ -17,6 +17,7 @@ module.exports = {
     browser: true, // no browser object
     node: true, // node env
     commonjs: true,
+    jest: true,
   },
   ignorePatterns: [
     'node_modules/', // ignore eslint
