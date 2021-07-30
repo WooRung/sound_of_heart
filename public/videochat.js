@@ -5,8 +5,9 @@
  */
 const socket = io('/videochat');
 let username;
-const user = JSON.parse(localStorage['user']);
+let user = localStorage['user'];
 if (user) {
+  user = JSON.parse(user);
   username = user.nickName || user.email;
 } else {
   username = prompt('이름 입력');
