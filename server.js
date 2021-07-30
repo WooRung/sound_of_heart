@@ -28,6 +28,7 @@ const io = SocketIO(server, {
   transports: ['websocket', 'polling'],
 });
 app.set('io', io);
+
 const configApp = require('./src/app');
 configApp(app);
 

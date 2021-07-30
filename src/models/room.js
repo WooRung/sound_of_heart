@@ -11,6 +11,10 @@ const Room = new Schema({
     type: [Schema.Types.ObjectId],
     ref: mongoose.model('User'),
   },
+  roomId: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Room', Room);

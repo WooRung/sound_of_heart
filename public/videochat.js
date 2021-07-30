@@ -175,6 +175,7 @@ socket.on('message', (username, msg) => {
   const msg_html = createMessage(username, msg);
   messages.innerHTML += msg_html;
 });
+
 let send = document.getElementById('send');
 send.addEventListener('click', (e) => {
   if (text.value.length !== 0) {
