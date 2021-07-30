@@ -36,6 +36,22 @@ const peer = new Peer(undefined, {
  * 1. peer로 call 한다.
  * 2. peer로 stream을 받는 이벤트리스너 등록
  */
+function isValidVideo(useTime) {
+  return new Promise(function (resolve, reject) {
+    return fetch('/api/videolimit', {
+      method: 'POST',
+      'Content-Type': 'application/json',
+      body: JSON.stringify({ useTime }),
+    })
+      .then((resp) => {
+        resolve(resp);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+let myTimer;
 
 navigator.mediaDevices
   .getUserMedia({
@@ -49,7 +65,22 @@ navigator.mediaDevices
 
       const newVideoElem = document.createElement('video');
       call.on('stream', (remoteStream) => {
+        myTimer = setInterval(() => {
+          isValidVideo(10)
+            .then((data) => {
+              return data.text();
+            })
+            .then((data) => {
+              if (data !== 'ok') {
+                alert('만료');
+              }
+            });
+        }, 10000);
         addVideo(newVideoElem, remoteStream);
+      });
+      call.on('close', () => {
+        clearInterval(myTimer);
+        newVideoElem.remove();
       });
     });
     socket.on('user-connected', (peerId) => {
@@ -60,9 +91,21 @@ navigator.mediaDevices
       const call = peer.call(peerId, stream);
 
       call.on('stream', (remoteStream) => {
+        myTimer = setInterval(() => {
+          isValidVideo(10)
+            .then((data) => {
+              return data.text();
+            })
+            .then((data) => {
+              if (data !== 'ok') {
+                alert('만료');
+              }
+            });
+        }, 10000);
         addVideo(newVideoElem, remoteStream);
       });
       call.on('close', () => {
+        clearInterval(myTimer);
         newVideoElem.remove();
       });
       // call.on('stream', (remoteStream) => {

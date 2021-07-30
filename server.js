@@ -36,7 +36,7 @@ const peerServer = Peer.ExpressPeerServer(server, {
   path: '/videochat',
   debug: true,
 });
-app.use('/peerjs', peerServer);
+// app.use('/peerjs', peerServer);
 
 const sock = require('./socketio');
 sock(io);
