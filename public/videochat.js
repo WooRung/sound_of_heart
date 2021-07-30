@@ -5,7 +5,12 @@
  */
 const socket = io('/videochat');
 let username;
-username = '팬더';
+const user = JSON.parse(localStorage['user']);
+if (user) {
+  username = user.nickName || user.email;
+} else {
+  username = prompt('이름 입력');
+}
 
 const videoGrid = document.querySelector('#video-grid');
 const videoElem = document.createElement('video');

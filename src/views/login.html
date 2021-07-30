@@ -88,6 +88,7 @@ endblock %} {% block contents %}
         console.log(body);
         console.log(body.data.token);
         localStorage['authToken'] = body.data.token;
+        localStorage['user'] = JSON.stringify(body.data.user);
         window.location.href = '/videochat';
       });
   }

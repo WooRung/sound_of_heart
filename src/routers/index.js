@@ -44,7 +44,7 @@ router.post(
     console.log(req.user);
     const token = jwt.sign(req.user, process.env.JWT_SECRET);
 
-    return res.json({ token });
+    return res.json({ user: req.user, token });
   }
 );
 
